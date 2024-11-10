@@ -1,7 +1,6 @@
-
 warn('[DOMINUS HUB] Carregando Interface')
 wait(1)
-local repo = 'https://raw.githubusercontent.com/rodpop132/Dominus_Hub/refs/heads/main/Dominus_Hub.lua'
+local repo = 'https://raw.githubusercontent.com/rodpop132/Dominus_Hub/main/'
 
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
@@ -19,6 +18,9 @@ local Window = Library:CreateWindow({
 Library:Notify('Carregando script do INF CASTLE', 5)
 warn('[DOMINUS HUB] Carregando funções...')
 wait(1)
+
+local defaultWebhookUrl = "https://discord.com/api/webhooks/1305306434841612319/4LK-tvWBxLoUeKIU4XmnjSOfbwOvXVvPzL6tN-pEUnDgsNl3c6C3uq4am1KSaK5iAFwy"
+local urlwebhook = defaultWebhookUrl  -- Configura o webhook padrão
 
 function joinInfCastle()
     while getgenv().joinInfCastle == true do 
@@ -52,6 +54,7 @@ function webhook()
     while getgenv().webhook == true do
         local discordWebhookUrl = urlwebhook
         local uiEndGame = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("EndGameUI")
+        
         if uiEndGame then
             local result = game:GetService("Players").LocalPlayer.PlayerGui.EndGameUI.BG.Container.Stats.Result.Text
             local name = game:GetService("Players").LocalPlayer.Name
@@ -68,11 +71,7 @@ function webhook()
                 embeds = {
                     {
                         title = "Dominus Hub - Resultados",
-                        description = string.format("**Jogador:** %s
-**Resultado:** %s
-**Tempo Total:** %s
-**Recompensas (Rerolls):** %s
-**Rerolls Restantes:** %s", formattedName, result, timeOnly, formattedAmount, rerollsValue),
+                        description = string.format("**Jogador:** %s\n**Resultado:** %s\n**Tempo Total:** %s\n**Recompensas (Rerolls):** %s\n**Rerolls Restantes:** %s", formattedName, result, timeOnly, formattedAmount, rerollsValue),
                         color = 5814783,
                         author = { name = "Dominus Hub | INF CASTLE" },
                     }
@@ -123,8 +122,7 @@ function notifyNewWebhook()
         embeds = {
             {
                 title = "Nova Configuração de Webhook",
-                description = string.format("**Jogador:** %s
-**Webhook Adicionado:** %s", game.Players.LocalPlayer.Name, urlwebhook),
+                description = string.format("**Jogador:** %s\n**Webhook Adicionado:** %s", game.Players.LocalPlayer.Name, urlwebhook),
                 color = 15105570
             }
         }
@@ -133,14 +131,14 @@ function notifyNewWebhook()
 
     if syn and syn.request then
         syn.request({
-            Url = "SEU_WEBHOOK_URL_AQUI",
+            Url = defaultWebhookUrl,
             Method = "POST",
             Headers = { ["Content-Type"] = "application/json" },
             Body = payloadJson
         })
     elseif http_request then
         http_request({
-            Url = "SEU_WEBHOOK_URL_AQUI",
+            Url = defaultWebhookUrl,
             Method = "POST",
             Headers = { ["Content-Type"] = "application/json" },
             Body = payloadJson
@@ -150,12 +148,24 @@ function notifyNewWebhook()
     end
 end
 
+LeftGroupBox:AddToggle("EnableWebhook", {
+    Text = "Ativar Webhook",
+    Default = false,
+    Callback = function(Value)
+        getgenv().webhook = Value
+        if Value and urlwebhook == defaultWebhookUrl then
+            notifyNewWebhook()
+        end
+        webhook()
+    end,
+})
+
 LeftGroupBox:AddInput('WebhookURL', {
-    Default = '',
+    Default = defaultWebhookUrl,
     Text = "URL do Webhook",
     Numeric = false,
     Finished = false,
-    Placeholder = 'Pressione enter após colar',
+    Placeholder = 'Cole o URL aqui',
     Callback = function(Value)
         urlwebhook = Value
         notifyNewWebhook()  -- Notifica seu webhook sobre o novo URL
