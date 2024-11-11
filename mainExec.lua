@@ -17,7 +17,7 @@ local function LoadGame(GameId)
 
     if GameName then
         local success, result = pcall(function()
-            return loadstring(game:HttpGet("https://raw.githubusercontent.com/TrilhaX/scriptexec/main/Games/"..GameName..".lua"))()
+            return loadstring(game:HttpGet("https://raw.githubusercontent.com/rodpop132/Dominus_Hub/refs/heads/main/Games"..GameName..".lua"))()
         end)
         
         if not success then
