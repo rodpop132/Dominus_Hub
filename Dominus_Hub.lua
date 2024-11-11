@@ -1,10 +1,9 @@
 warn('[DOMINUS HUB] Carregando Interface')
 wait(1)
-local repo = 'https://raw.githubusercontent.com/rodpop132/Dominus_Hub/main/'
 
-local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
-local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
-local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/rodpop132/Dominus_Hub/main/Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet('https://raw.githubusercontent.com/rodpop132/Dominus_Hub/main/addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet('https://raw.githubusercontent.com/rodpop132/Dominus_Hub/main/addons/SaveManager.lua'))()
 Library:Notify('Bem-vindo ao Dominus Hub', 5)
 
 local Window = Library:CreateWindow({
